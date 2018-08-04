@@ -16,3 +16,13 @@ Declare class `final` unless you explicitly design it to be inheritable. For non
 When designing a module prefer `public` for non final class unless you explicitly design it to be inheritable by external clients. For `open` class prefer `public` for members except for those you explicitly design for overriding by external clients.
 
 > Every point that can be overridden increases complexity, thus it should always be a conscious choice to add it.
+
+### Avoid force unwrapping
+
+Use `guard` and `fatalError()` instead of force unwrapping to clarify your intent.
+
+```swift
+guard let value = optionalValue else { fatalError("reason why value must be present") }
+```
+
+> This is to avoid situations in which reason for force unwrapping is undocumented.
