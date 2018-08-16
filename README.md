@@ -82,3 +82,33 @@ Gather IBOutlets in one group above all the other properties and keep them priva
 ```
 
 > Outlets are implementation detail and should be kept private. Gathering them in one grup above all the other properties is old convention.
+
+### Avoid double negation
+
+Don't not avoid double negation.
+```swift
+if !unavailable {
+    //...
+}
+```
+> This is to avoid confusion.
+
+Use "positive" names for variables and properties.
+
+```swift
+if available {
+    //...
+}
+```
+```swift
+return available ? operationWhenAvailable() : nil
+```
+> This is to decrease mental tax often caused by "negative" properties. It will also help keeping "main" application flow on the left hand side of colon when conditional operator `?:` is used.
+
+Do not use negative conditions with guard.
+```swift
+guard !array.isEmpty else { return }
+```
+
+> This is to restrain overusing of `guard` statement where `if` would suffice. 
+> `if array.isEmpty { return }`
