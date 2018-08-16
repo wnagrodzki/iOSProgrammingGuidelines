@@ -112,3 +112,49 @@ guard !array.isEmpty else { return }
 
 > This is to restrain overusing of `guard` statement where `if` would suffice. 
 > `if array.isEmpty { return }`
+
+### Golden (or Happy) Path
+
+Nesting `if` statements should be avoided.
+
+```swift
+func buy(soda id: SodaID, with money: [Coin]) throws -> (Soda, [Coin]) {
+    if let soda = soda(for: id) {
+        if value(of: money) >= soda.price {
+            if let change = change(from: money, minus: soda.price) {
+                return (soda, change)
+            }
+            else {
+                throw PurchaseError.noChange
+            }
+        }
+        else {
+            throw PurchaseError.insufficientFunds
+        }
+    }
+    else {
+        throw PurchaseError.outOfStock
+    }
+}
+```
+
+All error conditions should be handled at the beginning of the function leaving "the working code" on the first indentation level.
+
+```swift
+func buy(soda id: SodaID, with money: [Coin]) throws -> (Soda, [Coin]) {
+    guard let soda = soda(for: id) else {
+        throw PurchaseError.outOfStock
+    }
+    
+    if value(of: money) < soda.price {
+        throw PurchaseError.insufficientFunds
+    }
+    
+    guard let change = change(from: money, minus: soda.price) else {
+        throw PurchaseError.noChange
+    }
+    
+    return (soda, change)
+}
+```
+> It is easier to understand error conditions written in linear manner than as a nested structure.
