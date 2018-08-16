@@ -35,3 +35,50 @@ func didDeliver(parcel: Parcel) {
 }
 ```
 > This is to make clear function is empty by intention and not by mistake
+
+### Declarations
+
+Do not declare type if compiler is able to infer it.
+
+```swift
+let string = "a string"
+let double = 1.0
+let int = 1
+let array = [1, 2, 3]
+let dictionary = [1: "one", 2: "two"]
+```
+
+> This is to minimize clutter.
+
+Keep type on the right hand side of assignment operator (this rule does not apply for closures, declare the type wherever it helps readability).
+
+```swift
+let height = CGFloat(44)
+let duration = NSTimeInterval(0.25)
+let view = UIView()
+var array = [Int]()
+var dictionary = [Int: String]()
+
+let accumulator: (Int, Int) -> Int = { $0 + $1 }
+```
+
+> Since not all the types can be declared by a literal and type on the left hand side of assignment operator (e.g. `let height: CGFloat = 20`), let's keep all the types on the right side.
+
+Declare constants within appropriate type.
+
+```swift
+class PhysicalObject {
+    /// N * m^2 * kg^-2
+    static let gravitationalConstant = 6.667e-11
+}
+```
+
+> This is to increase discoverability and avoid global namespace pollution.
+
+Gather IBOutlets in one group above all the other properties and keep them private.
+
+```swift
+@IBOutlet private weak var view: UIView!
+```
+
+> Outlets are implementation detail and should be kept private. Gathering them in one grup above all the other properties is old convention.
