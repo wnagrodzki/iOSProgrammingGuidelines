@@ -26,3 +26,12 @@ guard let value = optionalValue else { fatalError("reason why value must be pres
 ```
 
 > This is to avoid situations in which reason for force unwrapping is undocumented.
+
+### Place noop comment in functions left empty by intention
+
+```swift
+func didDeliver(parcel: Parcel) {
+    // noop
+}
+```
+> This is to make clear function is empty by intention and not by mistake
