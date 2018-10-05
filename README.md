@@ -17,12 +17,20 @@ When designing a module prefer `public` for non final class unless you explicitl
 
 > Every point that can be overridden increases complexity, thus it should always be a conscious choice to add it.
 
+### Assertions, preconditions and fatal errors
+
+Use `precondition(_:_:file:line:)` for internal sanity checks by default. If you do not want to impact performance of shipping code apply `assert(_:_:file:line:)` instead.
+
+> This is to avoid internal sanity checks being removed in optimized builds. Using preconditions to enforce valid data and state causes your application to terminate more predictably if an invalid state occurs, and helps make the problem easier to debug. Stopping execution as soon as an invalid state is detected also helps limit the damage caused by that invalid state.
+
+Utilize `fatalError(_:file:line:)` in places where application's state and logic are not evaluated at all, for example: unimplemented method stubs.
+
 ### Avoid force unwrapping
 
-Use `guard` and `fatalError()` instead of force unwrapping to clarify your intent.
+Use `guard` and `preconditionFailure(_:file:line:)` instead of force unwrapping to clarify your intent.
 
 ```swift
-guard let value = optionalValue else { fatalError("reason why value must be present") }
+guard let value = optionalValue else { preconditionFailure("reason why value must be present") }
 ```
 
 > This is to avoid situations in which reason for force unwrapping is undocumented.
