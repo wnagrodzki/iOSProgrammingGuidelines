@@ -166,3 +166,32 @@ func buy(soda id: SodaID, with money: [Coin]) throws -> (Soda, [Coin]) {
 }
 ```
 > It is easier to understand error conditions written in linear manner than as a nested structure.
+
+### Use structured data
+
+It is common to misuse primitive type like in the function below. Any string can be passed as the  argument. It is too general provided that application expects email to have certain format.
+
+```swift
+func showUser(withEmail: String) { }
+```
+
+Define a new type to make the API more strict, provide validation and convenience methods/properties if needed.
+
+```swift
+struct Email: RawRepresentable {
+    
+    let username: String
+    let host: String
+    
+    var rawValue: String {
+        return username + "@" + host
+    }
+    
+    init?(rawValue: String) {
+        // parsing and validation code
+    }
+}
+
+func showUser(with: Email) { }
+```
+> This is to increase source code reliability by building it on data you can trust.
