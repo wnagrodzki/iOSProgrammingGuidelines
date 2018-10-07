@@ -195,3 +195,18 @@ struct Email: RawRepresentable {
 func showUser(with: Email) { }
 ```
 > This is to increase source code reliability by building it on data you can trust.
+
+### Extending object's lifetime
+
+If you are breaking reference cycle for an object bind it to a strong reference for the duration of the closure’s execution.
+
+```swift
+operation.onComplete { [weak self] result in
+  guard let self = self else { return }
+  let model = self.updateModel(result)
+  self.updateUI(model)
+}
+```
+
+> This is to avoid deallocation of weakly referenced object during closure execution.
+> Use `strongSelf` instead of `self` for local variable name until [SR-6156]( https://bugs.swift.org/browse/SR-6156) is fixed.
