@@ -210,3 +210,9 @@ operation.onComplete { [weak self] result in
 
 > This is to avoid deallocation of weakly referenced object during closure execution.
 > Use `strongSelf` instead of `self` for local variable name until [SR-6156]( https://bugs.swift.org/browse/SR-6156) is fixed.
+
+### Accessing Singleton
+
+Do not access singleton instance directly via static method - `Singleton.sharedInstance()`. Decouple from it with dependency injection.
+
+> If a singleton is used directly there is no way to perform unit tests in isolation from it. Moreover, it may introduce unexpected shared state between unit tests if they are executed in one run.
