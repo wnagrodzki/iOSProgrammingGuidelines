@@ -89,7 +89,7 @@ Gather IBOutlets in one group above all the other properties and keep them priva
 @IBOutlet private weak var view: UIView!
 ```
 
-> Outlets are implementation detail and should be kept private. Gathering them in one grup above all the other properties is old convention.
+> Outlets are implementation detail and should be kept private. Gathering them in one group above all the other properties is old convention.
 
 ### Avoid specifying access control modifiers on extension level
 
