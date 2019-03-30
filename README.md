@@ -91,6 +91,32 @@ Gather IBOutlets in one group above all the other properties and keep them priva
 
 > Outlets are implementation detail and should be kept private. Gathering them in one grup above all the other properties is old convention.
 
+### Avoid specifying access control modifiers on extension level
+
+Access control modifiers should not be specified on extension level:
+
+```swift
+private extension MyType {
+    func method() {
+        // code using helper()
+    }
+    func helper() { ... }
+}
+```
+
+But on member level:
+
+```swift
+extension MyType {
+    fileprivate func method() {
+        // code using helper()
+    }
+    private func helper() { ... }
+}
+```
+
+> This is to introduce distinction between members that should be visible from different types in the same file and those which should not. (`private extension` has the same result as `fileprivate extension` where all members end up being `fileprivate`).
+
 ### Avoid double negation
 
 Don't not avoid double negation.
