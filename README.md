@@ -242,3 +242,49 @@ operation.onComplete { [weak self] result in
 Do not access singleton instance directly via static method - `Singleton.sharedInstance()`. Decouple from it with dependency injection.
 
 > If a singleton is used directly there is no way to perform unit tests in isolation from it. Moreover, it may introduce unexpected shared state between unit tests if they are executed in one run.
+
+### Sharing helper methods via protocol extension
+
+Place shared helper methods in extension of dedicated separate protocol.
+
+```swift
+// MyProtocol.swift
+
+protocol MyProtocol {
+    func method()
+}
+
+protocol MyProtocolBase { }
+
+extension MyProtocolBase {
+
+    func helperMethod() { }
+}
+```
+```swift
+// MyProtocolImplA.swift
+
+class MyProtocolImplA: MyProtocol {
+
+    func method() {
+        // helperMethod() can be called here due to MyProtocolBase conformance
+    }
+}
+
+extension MyProtocolImplA: MyProtocolBase { }
+```
+```swift
+// MyProtocolImplB.swift
+
+class MyProtocolImplB: MyProtocol {
+
+    func method() {
+        // helperMethod() can be called here due to MyProtocolBase conformance
+    }
+}
+
+extension MyProtocolImplB: MyProtocolBase { }
+```
+
+> This is to avoid exposing helper methods in the main protocol and thus polluting it.
+
